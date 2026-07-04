@@ -2,6 +2,7 @@ import { useState } from "react";
 import BrandMark from "./BrandMark";
 import Button from "./ui/Button";
 import { navLinks } from "../data/content";
+import logo from "../assets/logo.png";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -11,6 +12,7 @@ export default function Header() {
       <div className="relative mx-auto flex max-w-[1220px] items-center justify-between px-8 py-[18px] max-lg:px-5">
         <a href="#top" className="flex items-center gap-3">
           {/* <BrandMark /> */}
+          <img src={logo} alt="NutriExpert" className="h-[26px] w-7" />
           <div className="flex flex-col leading-[1.05]">
             <span className="font-[family-name:var(--font-display)] text-[17px] font-bold tracking-tight text-charcoal">
               NutriExpert

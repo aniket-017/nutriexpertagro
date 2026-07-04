@@ -1,5 +1,6 @@
 import BrandMark from './BrandMark'
 import { navLinks } from '../data/content'
+import logo from "../assets/logo.png";
 
 export default function Footer() {
   return (
@@ -8,6 +9,8 @@ export default function Footer() {
         <div className="flex flex-wrap items-center justify-between gap-5">
           <div className="flex items-center gap-3">
             {/* <BrandMark className="h-[26px] w-7" /> */}
+            <img src={logo} alt="NutriExpert" className="h-[26px] w-7" />
+            
             <div className="flex flex-col leading-[1.05]">
               <span className="font-[family-name:var(--font-display)] text-[17px] font-bold text-white">
                 NutriExpert
