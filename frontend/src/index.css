@@ -1,111 +1,121 @@
-:root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+@import "tailwindcss";
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+@theme {
+  --color-sky: #4fafdc;
+  --color-sky-light: #bfe6f5;
+  --color-teal: #1c6e82;
+  --color-deep-teal: #0f4c5c;
+  --color-green: #79b62c;
+  --color-green-dark: #587f1f;
+  --color-charcoal: #33342f;
+  --color-charcoal-soft: #5a5c54;
+  --color-cream: #fafaf6;
+  --color-paper: #f1f3ec;
+  --color-line: #dcdfd3;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  --shadow-card: 0 20px 50px -25px rgba(15, 76, 92, 0.35);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  margin: 0;
+  font-family: var(--font-body);
+  color: var(--color-charcoal);
+  background: var(--color-cream);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+:focus-visible {
+  outline: 3px solid var(--color-green);
+  outline-offset: 3px;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translateY(-14px);
+    opacity: 1;
   }
 }
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
+
+@keyframes grow {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
   }
 }
-p {
-  margin: 0;
+
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+@keyframes scroll-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+.granule {
+  animation: float 5.5s ease-in-out infinite;
+}
+.granule.g2 {
+  animation-delay: 0.7s;
+}
+.granule.g3 {
+  animation-delay: 1.6s;
+}
+.granule.g4 {
+  animation-delay: 2.3s;
+}
+.granule.g5 {
+  animation-delay: 0.3s;
+}
+
+.sprout-grow {
+  transform-origin: bottom center;
+  animation: grow 3.2s cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
+}
+
+.leaf-sway {
+  transform-origin: bottom center;
+  animation: sway 4s ease-in-out infinite;
+}
+
+.strip-track {
+  animation: scroll-left 26s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  * {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+  }
 }
