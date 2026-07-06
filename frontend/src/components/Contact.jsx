@@ -7,10 +7,47 @@ import { contactInfo } from '../data/content'
 
 export default function Contact() {
   const [formNote, setFormNote] = useState('We typically respond within one business day.')
+  const [submitting, setSubmitting] = useState(false)
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
-    setFormNote('Thanks — this is a demo form, connect it to your backend to receive messages.')
+    const form = e.target
+    const data = {
+      name: form.name.value,
+      phone: form.phone.value,
+      email: form.email.value,
+      crop: form.crop.value,
+      landSize: form.landSize.value,
+      message: form.message.value,
+    }
+
+    setSubmitting(true)
+    setFormNote('Sending your enquiry…')
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+
+      const result = await res.json()
+
+      if (!res.ok) {
+        throw new Error(result.error || 'Something went wrong.')
+      }
+
+      form.reset()
+      setFormNote(
+        data.email?.trim()
+          ? 'Thank you! We received your enquiry and sent a confirmation to your email. We will get back to you within 24 hours.'
+          : 'Thank you! We received your enquiry and will get back to you within 24 hours.'
+      )
+    } catch (err) {
+      setFormNote(err.message || 'Failed to send. Please try again or email us directly.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -55,10 +92,12 @@ export default function Contact() {
                   </label>
                   <input
                     id="fname"
+                    name="name"
                     type="text"
                     required
+                    disabled={submitting}
                     placeholder="Your full name"
-                    className="rounded-[9px] border border-white/20 bg-white/8 px-3.5 py-3 text-[14.5px] text-white placeholder:text-white/40 focus:border-green focus:bg-white/12 focus:outline-none"
+                    className="rounded-[9px] border border-white/20 bg-white/8 px-3.5 py-3 text-[14.5px] text-white placeholder:text-white/40 focus:border-green focus:bg-white/12 focus:outline-none disabled:opacity-60"
                   />
                 </div>
                 <div className="grid gap-1.5">
@@ -70,9 +109,11 @@ export default function Contact() {
                   </label>
                   <input
                     id="fphone"
+                    name="phone"
                     type="tel"
+                    disabled={submitting}
                     placeholder="10-digit mobile"
-                    className="rounded-[9px] border border-white/20 bg-white/8 px-3.5 py-3 text-[14.5px] text-white placeholder:text-white/40 focus:border-green focus:bg-white/12 focus:outline-none"
+                    className="rounded-[9px] border border-white/20 bg-white/8 px-3.5 py-3 text-[14.5px] text-white placeholder:text-white/40 focus:border-green focus:bg-white/12 focus:outline-none disabled:opacity-60"
                   />
                 </div>
               </div>
@@ -86,9 +127,12 @@ export default function Contact() {
                 </label>
                 <input
                   id="femail"
+                  name="email"
                   type="email"
+                  required
+                  disabled={submitting}
                   placeholder="you@example.com"
-                  className="rounded-[9px] border border-white/20 bg-white/8 px-3.5 py-3 text-[14.5px] text-white placeholder:text-white/40 focus:border-green focus:bg-white/12 focus:outline-none"
+                  className="rounded-[9px] border border-white/20 bg-white/8 px-3.5 py-3 text-[14.5px] text-white placeholder:text-white/40 focus:border-green focus:bg-white/12 focus:outline-none disabled:opacity-60"
                 />
               </div>
 
@@ -102,9 +146,11 @@ export default function Contact() {
                   </label>
                   <input
                     id="fcrop"
+                    name="crop"
                     type="text"
+                    disabled={submitting}
                     placeholder="e.g. Sugarcane, Cotton"
-                    className="rounded-[9px] border border-white/20 bg-white/8 px-3.5 py-3 text-[14.5px] text-white placeholder:text-white/40 focus:border-green focus:bg-white/12 focus:outline-none"
+                    className="rounded-[9px] border border-white/20 bg-white/8 px-3.5 py-3 text-[14.5px] text-white placeholder:text-white/40 focus:border-green focus:bg-white/12 focus:outline-none disabled:opacity-60"
                   />
                 </div>
                 <div className="grid gap-1.5">
@@ -116,9 +162,11 @@ export default function Contact() {
                   </label>
                   <input
                     id="fland"
+                    name="landSize"
                     type="text"
+                    disabled={submitting}
                     placeholder="e.g. 5"
-                    className="rounded-[9px] border border-white/20 bg-white/8 px-3.5 py-3 text-[14.5px] text-white placeholder:text-white/40 focus:border-green focus:bg-white/12 focus:outline-none"
+                    className="rounded-[9px] border border-white/20 bg-white/8 px-3.5 py-3 text-[14.5px] text-white placeholder:text-white/40 focus:border-green focus:bg-white/12 focus:outline-none disabled:opacity-60"
                   />
                 </div>
               </div>
@@ -132,14 +180,21 @@ export default function Contact() {
                 </label>
                 <textarea
                   id="fmsg"
+                  name="message"
                   rows={3}
+                  disabled={submitting}
                   placeholder="Tell us about your soil / requirement"
-                  className="resize-none rounded-[9px] border border-white/20 bg-white/8 px-3.5 py-3 text-[14.5px] text-white placeholder:text-white/40 focus:border-green focus:bg-white/12 focus:outline-none"
+                  className="resize-none rounded-[9px] border border-white/20 bg-white/8 px-3.5 py-3 text-[14.5px] text-white placeholder:text-white/40 focus:border-green focus:bg-white/12 focus:outline-none disabled:opacity-60"
                 />
               </div>
 
-              <Button type="submit" variant="white" className="mt-1.5 justify-self-start">
-                Send Enquiry
+              <Button
+                type="submit"
+                variant="white"
+                className="mt-1.5 justify-self-start"
+                disabled={submitting}
+              >
+                {submitting ? 'Sending…' : 'Send Enquiry'}
               </Button>
               <p className="text-xs text-white/50">{formNote}</p>
             </form>
